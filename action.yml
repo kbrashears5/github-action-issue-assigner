@@ -1,0 +1,16 @@
+name: 'Issue Assigner'
+description: 'Github Action to assign newly created issues to code owner'
+author: 'kbrashears5'
+branding:
+  icon: 'upload-cloud'
+  color: 'purple'
+inputs:
+  TOKEN:
+    description: 'Personal access token with Repo privileges'
+    required: true
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.TOKEN }}
