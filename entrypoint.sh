@@ -41,4 +41,4 @@ echo "Assigning issue to [${USER_NAME}]"
         -H "Content-Type: application/json" \
         -u ${USERNAME}:${GITHUB_TOKEN} \
         --silent \
-        ${GITHUB_API_URL}/repos/${repository}/issues/${NUMBER}/assignees
+        ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/issues/${NUMBER}/assignees
