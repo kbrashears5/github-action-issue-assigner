@@ -30,15 +30,30 @@ echo " "
 
 # assign issue
 echo "Assigning issue to [${USER_NAME}]"
-    jq -n --argjson assignees "$ASSIGNEES_JSON" '{assignees:$assignees}'
-    jq -n --argjson assignees "$ASSIGNEES_JSON" \
-    '{
-        assignees:$assignees
-    }' \
-    | curl -d @- \
-        -X POST \
-        -H "Accept: application/vnd.github.v3+json" \
-        -H "Content-Type: application/json" \
-        -u ${USERNAME}:${GITHUB_TOKEN} \
-        --silent \
-        ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/issues/${NUMBER}/assignees
+jq -n --argjson assignees "$ASSIGNEES_JSON" '{assignees:$assignees}'
+jq -n --argjson assignees "$ASSIGNEES_JSON" \
+'{
+    assignees:$assignees
+}' \
+| curl -d @- \
+    -X POST \
+    -H "Accept: application/vnd.github.v3+json" \
+    -H "Content-Type: application/json" \
+    -u ${USERNAME}:${GITHUB_TOKEN} \
+    --silent \
+    ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/issues/${NUMBER}/assignees
+
+echo "Creating comment to trigger notification"
+MESSAGE="AUTOMATED COMMENT from kbrashears5/github-action-issue-assigner\n\nAssigning this to @${USER_NAME} and sending them a notification\nThis issue will be looked at soon!"
+jq -n --arg body "$MESSAGE" '{body:$body}'
+jq -n --arg body "$MESSAGE" \
+'{
+    body:$body
+}' \
+| curl -d @- \
+    -X POST \
+    -H "Accept: application/vnd.github.v3+json" \
+    -H "Content-Type: application/json" \
+    -u ${USERNAME}:${GITHUB_TOKEN} \
+    --silent \
+    ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/issues/${NUMBER}/comments
