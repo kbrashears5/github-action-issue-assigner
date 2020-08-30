@@ -30,8 +30,8 @@ echo " "
 
 # assign issue
 echo "Assigning issue to [${USER_NAME}]"
-    jq -n \
-    --argjson assignees $ASSIGNEES_JSON \
+    jq -n --argjson assignees "$ASSIGNEES_JSON" '{assignees:$assignees}'
+    jq -n --argjson assignees "$ASSIGNEES_JSON" \
     '{
         assignees:$assignees
     }' \
