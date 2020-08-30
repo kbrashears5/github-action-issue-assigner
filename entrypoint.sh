@@ -17,10 +17,10 @@ echo " "
 
 # get latest issue
 echo "Getting latest issue on [${REPO_NAME}]"
-ISSUES=$(curl -X GET -H "Accept: application/vnd.github.v3+json" -u ${USERNAME}:${GITHUB_TOKEN} --silent "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/issues?sort=updated&direction=asc&state=open&per_page=1" | jq '.[].id')
-readarray -t ISSUE_IDS <<< "$ISSUES"
-ID="${ISSUES[0]}"
-echo "Issue ID: [${ID}]"
+ISSUES=$(curl -X GET -H "Accept: application/vnd.github.v3+json" -u ${USERNAME}:${GITHUB_TOKEN} --silent "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/issues?sort=updated&direction=asc&state=open&per_page=1" | jq '.[].number')
+readarray -t ISSUE_NUMBERS <<< "$ISSUES"
+NUMBER="${ISSUE_NUMBERS[0]}"
+echo "Issue Number: [${NUMBER}]"
 
 # turn repo username into array
 readarray -t ASSIGNEES <<< "$USER_NAME"
@@ -41,4 +41,4 @@ echo "Assigning issue to [${USER_NAME}]"
         -H "Content-Type: application/json" \
         -u ${USERNAME}:${GITHUB_TOKEN} \
         --silent \
-        ${GITHUB_API_URL}/repos/${repository}/issues/${ID}/assignees
+        ${GITHUB_API_URL}/repos/${repository}/issues/${NUMBER}/assignees
