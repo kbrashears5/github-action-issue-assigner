@@ -37,3 +37,10 @@ jobs:
 | Parameter | Required | Description |
 | --- | --- | --- |
 | TOKEN | true | Personal Access Token with Repo scope |
+
+## Other requirements
+With no configuration, you will be able to browse issues by seeing them [assigned](https://github.com/issues/assigned) or [mentioned](https://github.com/.issues/mentioned).
+
+In order to receive email notifications, you must have the following checked on your [Email Notification Preferences](https://github.com/settings/notifications):
+- Comments on Issues and Pull Requests
+- Include your own updates
