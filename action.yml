@@ -1,12 +1,12 @@
-name: 'Issue Assigner'
-description: 'Github Action to assign newly created issues to code owner'
+name: 'Issue Notifier'
+description: 'Github Action to notify newly created issues to code owner'
 author: 'kbrashears5'
 branding:
   icon: 'upload-cloud'
   color: 'purple'
 inputs:
   TOKEN:
-    description: 'Personal access token with Repo privileges'
+    description: 'Base 64 encoded {username}:{token} where token is Personal Access Token with repo scope'
     required: true
 
 runs:

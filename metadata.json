@@ -1,5 +1,5 @@
 {
-    "description": "Github Action to assign newly created issues to code owner",
+    "description": "Github Action to notify newly created issues to code owner",
     "homepage": "https://github.com/kbrashears5/github-action-issue-assigner",
     "keywords": [
         "issue",
