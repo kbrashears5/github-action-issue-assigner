@@ -1,8 +1,17 @@
 #!/bin/bash
 
+STATUS=0
+
+# remember last error code
+trap 'STATUS=$?' ERR
+
+# problem matcher must exist in workspace
+cp /error-matcher.json $HOME/file-sync-error-matcher.json
+echo "::add-matcher::$HOME/file-sync-error-matcher.json"
+
 echo "Repository: [$GITHUB_REPOSITORY]"
 
-BASE64_GITHUB_TOKEN="$INPUT_TOKEN"
+GITHUB_TOKEN="$INPUT_TOKEN"
 
 echo " "
 
@@ -37,27 +46,30 @@ jq -n --arg body "$MESSAGE" \
     -X POST \
     -H "Accept: application/vnd.github.v3+json" \
     -H "Content-Type: application/json" \
-    -u ${BASE64_GITHUB_TOKEN} \
+    -u ${GITHUB_TOKEN} \
     --silent \
     ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/issues/${NUMBER}/comments
 
 # assign issue
-# TODO figure out if token has admin or collaborator permissions to repo
+# turn repo username into array
+readarray -t ASSIGNEES <<< "$USER_NAME"
+ASSIGNEES_JSON=`printf '%s\n' "${ASSIGNEES[@]}" | jq -R . | jq -s .`
 
-# # turn repo username into array
-# readarray -t ASSIGNEES <<< "$USER_NAME"
-# ASSIGNEES_JSON=`printf '%s\n' "${ASSIGNEES[@]}" | jq -R . | jq -s .`
+echo "Assigning issue to [${USER_NAME}]"
+jq -n --argjson assignees "$ASSIGNEES_JSON" '{assignees:$assignees}'
 
-# echo "Assigning issue to [${USER_NAME}]"
-# jq -n --argjson assignees "$ASSIGNEES_JSON" '{assignees:$assignees}'
-# jq -n --argjson assignees "$ASSIGNEES_JSON" \
-# '{
-#     assignees:$assignees
-# }' \
-# | curl -d @- \
-#     -X POST \
-#     -H "Accept: application/vnd.github.v3+json" \
-#     -H "Content-Type: application/json" \
-#     -u ${BASE64_GITHUB_TOKEN} \
-#     --silent \
-#     ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/issues/${NUMBER}/assignees
+# "try/catch" to figure out if token has admin or collaborator permissions to repo
+jq -n --argjson assignees "$ASSIGNEES_JSON" \
+'{
+    assignees:$assignees
+}' \
+| curl -d @- \
+    -X POST \
+    -H "Accept: application/vnd.github.v3+json" \
+    -H "Content-Type: application/json" \
+    -u ${GITHUB_TOKEN} \
+    --silent \
+    ${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/issues/${NUMBER}/assignees \
+|| echo "Token does not have admin permissions to repo. Unable to assign"
+
+exit $STATUS

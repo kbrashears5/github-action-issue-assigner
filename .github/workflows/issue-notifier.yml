@@ -1,4 +1,4 @@
-name: Issue Notifier
+name: Repository Issue Assigner
 
 on:
   issues:

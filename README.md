@@ -31,23 +31,12 @@ jobs:
       - name: Issue Assigner
         uses: kbrashears5/github-action-issue-assigner@v1.0.0
         with:
-          TOKEN: ${{ secrets.BASE64_TOKEN }}
+          TOKEN: ${{ secrets.TOKEN }}
 ```
 ## Parameters
 | Parameter | Required | Description |
 | --- | --- | --- |
 | TOKEN | true | Personal Access Token with Repo scope. See below for details on running as yourself or as a bot |
-
-## Creating token
-Create a base 64 encoded token using the following PowerShell or using your own method following the pattern `{username}:{token}`:
-```powershell
-$username = "{username}"
-$token = "{token}
-$credentials = "$username:$token"
-$bytes = [System.Text.Encoding]::Unicode.GetBytes($credentials)
-$base64 = [Convert]::ToBase64String($bytes)
-$base64
-```
 
 ## Running as your own account
 Create a Personal Access Token with repo:public_repo scope.
@@ -73,7 +62,7 @@ You'll get account emails to your same email (I actually turned off all email no
 
 Next, setup a Personal Access Token in your new bot account with repo:public_repo scope. This allows the bot the ability to create comments on issues. Unfortunately only admins or collaborators can assign issues, so this won't be able to assign them to yourself without another step.
 
-Create a new secret in your repository and reference it in the yaml above, using the script in the `Creating Token` section to encode your username and token.
+Create a new secret in your repository and reference it in the yaml above.
 
 Once the PAT is setup, you will be able to browse issues by seeing them [mentioned](https://github.com/.issues/mentioned) in your account.
 
