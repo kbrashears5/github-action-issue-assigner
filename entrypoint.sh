@@ -26,7 +26,7 @@ echo " "
 
 # get latest issue
 echo "Getting latest issue on [${REPO_NAME}]"
-ISSUES=$(curl -X GET -H "Accept: application/vnd.github.v3+json" --silent "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/issues?sort=updated&direction=asc&state=open&per_page=1" | jq '.[].number')
+ISSUES=$(curl -X GET -H "Accept: application/vnd.github.v3+json" --silent "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/issues?sort=updated&direction=desc&state=open&per_page=1" | jq '.[].number')
 readarray -t ISSUE_NUMBERS <<< "$ISSUES"
 NUMBER="${ISSUE_NUMBERS[0]}"
 echo "Issue Number: [${NUMBER}]"
