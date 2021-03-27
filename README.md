@@ -23,6 +23,8 @@ name: Issue Assigner
 on:
   issues:
     types: [opened]
+  pull_request:
+    types: [opened]
 
 jobs:
   issue_assigner:
