@@ -1,14 +1,8 @@
-<h1 align="center">github-action-issue-assigner</h1>
+# github-action-issue-assigner
 
-
-<div align="center">
-
-<b>Github Action to assign newly created issues to code owner</b>
+Github Action to assign newly created issues to code owner
 
 [![version](https://img.shields.io/github/v/release/kbrashears5/github-action-issue-assigner)](https://img.shields.io/github/v/release/kbrashears5/github-action-issue-assigner)
-
-</div>
-
 
 # Use Cases
 Notifications do not get generated for when a new issue is created on a repo, other than if it's assigned to yourself, or you're mentioned, from what I've found.
